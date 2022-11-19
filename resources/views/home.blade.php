@@ -17,7 +17,7 @@
         <div class="logoContainerIndex"><img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/ff5f962a-f041-4888-f619-87f146d0f600/public" class="logo" /></div>
         <div class="spinnerContainer">
             <div id="sp1" class="spinner">
-
+                <div></div><div></div><div></div><div></div><div></div><div></div>
             </div>
         </div>
         <script>
