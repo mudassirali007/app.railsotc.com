@@ -33,7 +33,7 @@
         </svg>
         </div>
         <div class="orderList">
-        <div class="noneContainer"><div class="noneHeading">&lt;Ooops...No Available History&gt;</div><div class="noneText">Make your first purchase 💸</div></div></div>
+            
         </div>
         </div>
         <script>

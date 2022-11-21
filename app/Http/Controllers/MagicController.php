@@ -20,22 +20,15 @@ class MagicController extends Controller
     public function orders(Request $request)
     {
         $did_token = $request->didt ? $request->didt : $request->magic_credential; 
-    
-        Magic::token()->validate($did_token);
         $user_meta = Magic::user()->get_metadata_by_token($did_token);
-      
-        return view('order', ['data' => $user_meta->data, 'didt' => $did_token  ]);
+        return view('order', ['data' => $user_meta->data, 'didt' => $did_token  ]);    
     }
 
     public function logout(Request $request)
     {
         $did_token = $request->didt ? $request->didt : $request->magic_credential; 
-       
-        Magic::token()->validate($did_token);
-       
         $user_meta = Magic::user()->logout_by_token($did_token);
-      
-        return redirect('/');
+        return redirect()->route('home');  
     }
 
     /**

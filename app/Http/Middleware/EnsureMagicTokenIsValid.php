@@ -17,19 +17,16 @@ class EnsureMagicTokenIsValid
      */
     public function handle(Request $request, Closure $next)
     {
-        $did_token = $request->bearerToken();
+        $did_token = $request->didt ? $request->didt : $request->magic_credential; 
         if ($did_token == null) {
-            return redirect('home');
+            return redirect()->route('home');
         }
 
         try {
             // Validate the did token
             Magic::token()->validate($did_token);
-        } catch (Throwable $e) {
-            // DIDT is malformed.
-            // You can handle this by remapping it to your application error.
-            //report($e);
-            return redirect('home');
+        } catch (\Exception $error) {
+            return redirect()->route('home');
         }
 
         return $next($request);

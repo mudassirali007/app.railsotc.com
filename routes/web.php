@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MagicController;
+use App\Http\Controllers\WyreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +19,15 @@ use App\Http\Controllers\MagicController;
 //     return view('home');
 // });
 //Route::get('/', [MagicController::class, 'index']);
-Route::resource('/', MagicController::class);
-Route::get('/orders', [MagicController::class, 'orders']);
-Route::get('/logout', [MagicController::class, 'logout']);
+Route::get('/', [MagicController::class, 'index'])->name('home');
 
+
+Route::middleware(['magic'])->group(function () {
+    Route::get('/orders', [MagicController::class, 'orders'])->name('orders');
+    Route::get('/logout', [MagicController::class, 'logout'])->name('logout');
+    
+    Route::get('/order', [WyreController::class, 'order'])->name('order');
+    Route::get('/fail', [WyreController::class, 'fail'])->name('fail');
+    Route::get('/nice', [WyreController::class, 'nice'])->name('nice');
+    });
 // ->middleware('magic')
