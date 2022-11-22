@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <link rel="icon" type="image/x-icon" href="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/eedd8a4a-3bbe-4cf7-2cab-f61fa117c400/public">
-        <link rel="apple-touch-icon" sizes="180x180" href="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/eedd8a4a-3bbe-4cf7-2cab-f61fa117c400/public">
-        <link rel="apple-touch-startup-image" href="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/eedd8a4a-3bbe-4cf7-2cab-f61fa117c400/public">
+        <link rel="icon" type="image/x-icon" href="assets/prog_rails.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/prog_rails.png">
+        <link rel="apple-touch-startup-image" href="assets/prog_rails.png">
         <link rel="stylesheet" href="static/style.css">
-        <meta name="apple-mobile-web-app-title" content="Ring App">
+        <meta name="apple-mobile-web-app-title" content="Rails App">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width">
-        <title>Ring App</title>
+        <title>Rails App</title>
     </head>
     <body>
         <div class="orderPage">
-        <div class="logoContainer"><img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/ff5f962a-f041-4888-f619-87f146d0f600/public" class="logo">
+        <div class="logoContainer"><img src="assets/prog_rails.png" class="logo" style="width:3rem">
         </div>
         <div class="orderContainer">
         <a href="/logout?didt={{$didt}}" class="logoutBtn">
