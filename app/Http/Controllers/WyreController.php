@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Magic;
+use App\Models\User;
+use App\Models\Order;
 
 class WyreController extends Controller
 {
@@ -53,7 +55,7 @@ class WyreController extends Controller
     public function nice(Request $request)
     {
         $did_token = $request->didt ? $request->didt : $request->magic_credential;    
-        return redirect()->route('fail',  ['didt' => $did_token]);
+        return view('nice', ['didt' => $did_token  ]); 
     }
   
 
@@ -63,6 +65,38 @@ class WyreController extends Controller
         return view('fail', ['didt' => $did_token  ]); 
     }
 
+    
+    public function webhook(Request $request)
+    {       
+        if(isset($request['referenceId']) && isset($request['orderId'])){
+            $user = User::where('issuer', $request['referenceId'])->first('id');  
+            if($user->id) $this->getOrderFull($request['orderId'],$user->id);
+        } 
+       
+       
+    }
+    public function getOrderFull($orderId,$userId)
+    {
+        $response = $this->client->request('GET', "$this->wyreApiURL/v3/orders/$orderId/full", [
+            'headers' => [
+                'accept' => 'application/json',
+                'authorization' => "Bearer $this->secret",
+            ],
+        ]);
+        // $file = \Storage::append('webhook.txt', );
+        // $file = \Storage::append('webhook.txt', gettype(json_decode($response->getBody(), true)));
+        // return ;
+        $data = $response->getBody();
+        $statuscode = $response->getStatusCode();
+        $responseArray = json_decode($response->getBody(), true);
+        
+       
+        if (200 === $statuscode && isset($responseArray['id'])) {
+            Order::updateOrCreate(['wyre_order_id'=>$orderId],['order_json'=>$data,'user_id'=>$userId,'wyre_order_id'=>$orderId]);
+        }
+    
+       
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -22,9 +22,10 @@
         </svg>
         </a>
         <h1 class="heading">Welcome 💰</h1>
-        <p class="email">{{$data->email}}</p>
+        <p class="email">{{$user->email}}</p>
         <p class="titlePurchased">TOTAL PURCHASED</p>
-        <div class="totalPurchased"><div class="totalPurchasedItem"><span class="dolladolla">$</span>0<span class="decimalPlace">.</span><span class="secondHalfTotal">00</span></div></div>
+        <div class="totalPurchased">
+        </div>
         <button class="orderBtn">BUY NOW</button>
         <div class="orderListHeader">
         <p class="historyLabel">History</p>
@@ -78,7 +79,10 @@
                     "VND": { amount: 0, symbol: "₫" },
                     "ZAR": { amount: 0, symbol: "R" },
                 }
-                let orders = JSON.parse('[]')
+                console.log(<?php echo json_encode($user->order); ?>)
+            
+                let orders = <?php echo $user->order ? json_encode($user->order) : '[]'; ?>;
+                // let orders = JSON.parse( '[]')
                 let orderListEl = document.querySelector('.orderList')
                 if (orders.length === 0) {
                     let noneContainer = document.createElement('div')
@@ -98,7 +102,8 @@
                         orderEl.className = "orderItem"
                         let orderContainerLeft = document.createElement('div')
                         orderContainerLeft.className = "orderContainerLeft"
-                        let orderData = order['order_data']
+                        // let orderData = order['order_data']
+                        let orderData = JSON.parse(order.order_json)
                         let orderDate = orderData['createdAt']
                         let orderDateEl = document.createElement('div')
                         let orderDateObj = new Date(orderDate)
@@ -146,18 +151,18 @@
                         totalEl.className = "total"
                         totalEl.innerText = `TOTAL: ${totalAmount} ${sourceCurrency}`
                         let status = orderData['status']
-                        let statusEl = document.createElement('div')
-                        statusEl.className = "status"
+                        let statusElement = document.createElement('div')
+                        statusElement.className = "status"
                         if (status == "COMPLETE") {
-                            statusEl.innerHTML = `<img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/ebed57c9-5502-40d6-b88e-63badfbfe700/public"/>STATUS: <span class="statusComplete">COMPLETE</span>`
+                            statusElement.innerHTML = `<img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/ebed57c9-5502-40d6-b88e-63badfbfe700/public"/>STATUS: <span class="statusComplete">COMPLETE</span>`
                         } else if (status == "PROCESSING") {
-                            statusEl.innerHTML = `<img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/daab49eb-2c2d-47cd-b87a-d85f82d1ef00/public"/>STATUS: <span class="statusPending">PENDING</span>`
+                            statusElement.innerHTML = `<img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/daab49eb-2c2d-47cd-b87a-d85f82d1ef00/public"/>STATUS: <span class="statusPending">PENDING</span>`
                         } else if (status == "FAILED") {
-                            statusEL.innerHTML = `<img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/af273d47-1480-4a0a-4c00-1e9a1135bb00/public"/>STATUS: <span class="statusFailed">FAILED</span>`
+                            statusElement.innerHTML = `<img src="https://imagedelivery.net/lkj0eE8VZbZgsjUOvbSRnA/af273d47-1480-4a0a-4c00-1e9a1135bb00/public"/>STATUS: <span class="statusFailed">FAILED</span>`
                         }
                         orderContainerRight.appendChild(purchaseEl)
                         orderContainerRight.appendChild(totalEl)
-                        orderContainerRight.appendChild(statusEl)
+                        orderContainerRight.appendChild(statusElement)
                         orderEl.appendChild(orderContainerLeft)
                         orderEl.appendChild(orderContainerRight)
                         orderListEl.appendChild(orderEl)
