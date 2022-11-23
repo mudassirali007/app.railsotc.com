@@ -65,6 +65,24 @@ class WyreController extends Controller
         return view('fail', ['didt' => $did_token  ]); 
     }
 
+
+    public function createWebhook(Request $request)
+    {
+        $params = array(
+        'owner'=>"account:$this->wyreAccount",
+        'webhook'=>"$this->url/webhook");
+        $queryString =  http_build_query($params);
+        $response = $this->client->request('POST', "$this->wyreApiURL/v2/digitalwallet/webhook?$queryString", [
+            'headers' => [
+                'accept' => 'application/json',
+                'authorization' => "Bearer $this->secret"
+            ],
+        ]);
+        $statuscode = $response->getStatusCode();
+        return $statuscode;
+       
+    }
+
     
     public function webhook(Request $request)
     {       

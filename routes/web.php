@@ -21,7 +21,7 @@ use App\Http\Controllers\WyreController;
 //Route::get('/', [MagicController::class, 'index']);
 Route::get('/', [MagicController::class, 'index'])->name('home');
 Route::post('/webhook', [WyreController::class, 'webhook'])->name('webhook');
-Route::any('/wallet', [WyreController::class, 'wallet'])->name('wallet');
+Route::any('/createWebhook', [WyreController::class, 'createWebhook'])->name('createWebhook');
 
 
 Route::middleware(['magic'])->group(function () {
