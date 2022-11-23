@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="indexContainer">
-        <script src="https://auth.magic.link/pnp/login" data-magic-publishable-api-key="{{ env('MAGIC_PUBLISHABLE_API_KEY'), 'pk_xxxx_XXXXXXXXXXX' }}" data-terms-of-service-uri="https://app.railsotc.com/#terms" data-privacy-policy-uri="https://app.railsotc.com/#privacy" data-redirect-uri="/orders"></script>
+        <script src="https://auth.magic.link/pnp/login" data-magic-publishable-api-key="{{ env('MAGIC_PUBLISHABLE_API_KEY'), 'pk_xxxx_XXXXXXXXXXX' }}" data-terms-of-service-uri="https://railsotc.com/terms/" data-privacy-policy-uri="https://railsotc.com/privacy/" data-redirect-uri="/orders"></script>
         <div class="logoContainerIndex"><img src="assets/prog_rails.png" class="logo" style="width:3rem"/></div>
         <div class="spinnerContainer">
             <div id="sp1" class="spinner">
