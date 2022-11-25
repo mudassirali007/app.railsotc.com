@@ -96,7 +96,7 @@
                         let orderData = JSON.parse(order.order_json)
                         let orderDate = orderData['createdAt']
                         let orderDateEl = document.createElement('div')
-                        let orderDateObj = new Date(orderDate)
+                        let orderDateObj = new Date(Number(orderDate))
                         orderDateEl.innerText = orderDateObj.toLocaleString([], {
                             year: '2-digit',
                             month: '2-digit',

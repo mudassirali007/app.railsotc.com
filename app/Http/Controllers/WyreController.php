@@ -53,15 +53,27 @@ class WyreController extends Controller
         }
        
     }
-
+    public function test(Request $request)
+    {
+        $request["dest"] = urldecode(rawurldecode($request->dest));
+        $request["owner"] = urldecode(rawurldecode($request->owner));
+        $request["paymentMethodName"] = urldecode(rawurldecode($request->paymentMethodName));
+        dd(json_encode($request->all()));
+     
+    }
+    
     public function nice(Request $request)
     {
         $did_token = $request->didt ? $request->didt : $request->magic_credential;
         $user_meta = Magic::user()->get_metadata_by_token($did_token);
         if($request->id && $request->paymentMethodName && $user_meta->data->issuer){
             unset($request['didt']);
+            unset($request['magic_credential']);
+            $request["dest"] = urldecode(rawurldecode($request->dest));
+            $request["owner"] = urldecode(rawurldecode($request->owner));
+            $request["paymentMethodName"] = urldecode(rawurldecode($request->paymentMethodName));
             $user = User::where('issuer', $user_meta->data->issuer)->first('id'); 
-            Order::updateOrCreate(['wyre_order_id'=>$request->id],['order_json'=>json_encode($request->all()),'payment_method_name'=>$request->paymentMethodName,'user_id'=>$user->id,'wyre_order_id'=>$request->id]);
+            Order::updateOrCreate(['wyre_order_id'=>$request->id],['order_json'=>json_encode($request->all()),'payment_method_name'=>$request["paymentMethodName"],'user_id'=>$user->id,'wyre_order_id'=>$request->id]);
             return view('nice', ['didt' => $did_token  ]); 
         } else {
             return redirect()->route('fail',  ['didt' => $did_token]);
