@@ -32,9 +32,11 @@ class WyreController extends Controller
    
     public function order(Request $request)
     {
-        $did_token = $request->didt ? $request->didt : $request->magic_credential; 
+        $did_token = $request->didt ? $request->didt : $request->magic_credential;
+        $user_meta = Magic::user()->get_metadata_by_token($did_token);
+        
         $response = $this->client->request('POST', "$this->wyreApiURL/v3/orders/reserve", [
-            'body' => '{"hideTrackBtn":true,"autoRedirect":true,"redirectUrl":"' . $this->url . '/nice?didt=' . $did_token . '","failureRedirectUrl":"' . $this->url . '/fail?didt=' . $did_token . '","referrerAccountId":"' . $this->wyreAccount . '","referenceId":"did:ethr:0x0A37B84F7314e7393b42F3Ad73bbc2B08bA49862"}',
+            'body' => '{"hideTrackBtn":true,"autoRedirect":true,"redirectUrl":"' . $this->url . '/nice?didt=' . $did_token . '","failureRedirectUrl":"' . $this->url . '/fail?didt=' . $did_token . '","referrerAccountId":"' . $this->wyreAccount . '","referenceId":"' . $user_meta->data->issuer . '"}',
             'headers' => [
                 'accept' => 'application/json',
                 'authorization' => "Bearer $this->secret",
@@ -86,6 +88,9 @@ class WyreController extends Controller
     
     public function webhook(Request $request)
     {       
+
+      \Storage::append('webhook.txt', $request);
+     
         if(isset($request['referenceId']) && isset($request['orderId'])){
             $user = User::where('issuer', $request['referenceId'])->first('id');  
             if($user->id) $this->getOrderFull($request['orderId'],$user->id);

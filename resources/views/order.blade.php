@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <link rel="icon" type="image/x-icon" href="assets/prog_rails.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="assets/prog_rails.png">
-        <link rel="apple-touch-startup-image" href="assets/prog_rails.png">
-        <link rel="stylesheet" href="static/style.css">
-        <meta name="apple-mobile-web-app-title" content="Rails App">
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width">
-        <title>Rails App</title>
-    </head>
+    @include('layouts.header')    
     <body>
         <div class="orderPage">
-        <div class="logoContainer"><img src="assets/prog_rails.png" class="logo" style="width:3rem">
+        <div class="logoContainer">
+            @include('layouts.logo')
         </div>
         <div class="orderContainer">
         <a href="/logout?didt={{$didt}}" class="logoutBtn">
@@ -24,8 +15,7 @@
         <h1 class="heading">Welcome 💰</h1>
         <p class="email">{{$user->email}}</p>
         <p class="titlePurchased">TOTAL PURCHASED</p>
-        <div class="totalPurchased">
-        </div>
+        <div class="totalPurchased"></div>
         <button class="orderBtn">BUY NOW</button>
         <div class="orderListHeader">
         <p class="historyLabel">History</p>

@@ -18,10 +18,12 @@ class EnsureMagicTokenIsValid
     public function handle(Request $request, Closure $next)
     {
         $did_token = $request->didt ? $request->didt : $request->magic_credential; 
-        if ($did_token == null) {
+        $decoded_did_token = \json_decode(\utf8_decode(\base64_decode($did_token, true)));
+    
+        if ($did_token === null || $decoded_did_token === null) {
             return redirect()->route('home');
         }
-
+       
         try {
             // Validate the did token
             Magic::token()->validate($did_token);
