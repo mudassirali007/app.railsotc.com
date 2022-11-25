@@ -19,8 +19,9 @@ class EnsureMagicTokenIsValid
     {
         $did_token = $request->didt ? $request->didt : $request->magic_credential; 
         $decoded_did_token = \json_decode(\utf8_decode(\base64_decode($did_token, true)));
-    
+       
         if ($did_token === null || $decoded_did_token === null) {
+            \Storage::append('request.txt', $request);
             return redirect()->route('home');
         }
        

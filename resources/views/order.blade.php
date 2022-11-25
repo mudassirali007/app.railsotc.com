@@ -105,7 +105,8 @@
                             minute: '2-digit',
                         });
                         orderDateEl.className = "orderDate"
-                        let paymentMethod = orderData['paymentMethodName']
+                        // let paymentMethod = orderData['paymentMethodName']
+                        let paymentMethod = order.payment_method_name
                         let paymentEl = document.createElement('div')
                         paymentEl.className = "orderPaymentMethod"
                         paymentEl.innerText = paymentMethod

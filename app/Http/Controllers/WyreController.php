@@ -36,7 +36,7 @@ class WyreController extends Controller
         $user_meta = Magic::user()->get_metadata_by_token($did_token);
         
         $response = $this->client->request('POST', "$this->wyreApiURL/v3/orders/reserve", [
-            'body' => '{"hideTrackBtn":true,"autoRedirect":true,"redirectUrl":"' . $this->url . '/nice?didt=' . $did_token . '","failureRedirectUrl":"' . $this->url . '/fail?didt=' . $did_token . '","referrerAccountId":"' . $this->wyreAccount . '","referenceId":"' . $user_meta->data->issuer . '"}',
+            'body' => '{"hideTrackBtn":true,"autoRedirect":true,"redirectUrl":"' . $this->url . '/nice?didt=' . $did_token . '&","failureRedirectUrl":"' . $this->url . '/fail?didt=' . $did_token . '","referrerAccountId":"' . $this->wyreAccount . '","referenceId":"' . $user_meta->data->issuer . '"}',
             'headers' => [
                 'accept' => 'application/json',
                 'authorization' => "Bearer $this->secret",
@@ -56,8 +56,18 @@ class WyreController extends Controller
 
     public function nice(Request $request)
     {
-        $did_token = $request->didt ? $request->didt : $request->magic_credential;    
-        return view('nice', ['didt' => $did_token  ]); 
+        $did_token = $request->didt ? $request->didt : $request->magic_credential;
+        $user_meta = Magic::user()->get_metadata_by_token($did_token);
+        if($request->id && $request->paymentMethodName && $user_meta->data->issuer){
+            unset($request['didt']);
+            $user = User::where('issuer', $user_meta->data->issuer)->first('id'); 
+            Order::updateOrCreate(['wyre_order_id'=>$request->id],['order_json'=>json_encode($request->all()),'payment_method_name'=>$request->paymentMethodName,'user_id'=>$user->id,'wyre_order_id'=>$request->id]);
+            return view('nice', ['didt' => $did_token  ]); 
+        } else {
+            return redirect()->route('fail',  ['didt' => $did_token]);
+        }
+          
+         
     }
   
 
@@ -89,14 +99,12 @@ class WyreController extends Controller
     public function webhook(Request $request)
     {       
 
-        
       \Storage::append('webhook.txt', $request);
      
         if(isset($request['referenceId']) && isset($request['orderId'])){
             $user = User::where('issuer', $request['referenceId'])->first('id');  
             if($user->id) $this->getOrderFull($request['orderId'],$user->id);
         } 
-       
        
     }
     public function getOrderFull($orderId,$userId)
