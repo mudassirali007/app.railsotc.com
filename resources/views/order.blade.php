@@ -94,9 +94,9 @@
                         orderContainerLeft.className = "orderContainerLeft"
                         // let orderData = order['order_data']
                         let orderData = JSON.parse(order.order_json)
-                        let orderDate = orderData['createdAt']
+                        let orderDate = Number(orderData['createdAt'])
                         let orderDateEl = document.createElement('div')
-                        let orderDateObj = new Date(Number(orderDate))
+                        let orderDateObj = new Date(orderDate)
                         orderDateEl.innerText = orderDateObj.toLocaleString([], {
                             year: '2-digit',
                             month: '2-digit',
@@ -132,12 +132,14 @@
                         let sourceCurrency = orderData['sourceCurrency']
                         let sourceSymbol = totalPurchaseAmount[sourceCurrency]['symbol']
                         orderContainerRight.className = "orderContainerRight"
-                        let purchaseAmount = orderData['purchaseAmount']
-                        totalPurchaseAmount[sourceCurrency]['amount'] += purchaseAmount
+                        let purchaseAmount = Number(orderData['purchaseAmount'])
+                        if(orderData['status'] == "COMPLETE"){
+                            totalPurchaseAmount[sourceCurrency]['amount'] += purchaseAmount
+                        }
                         let purchaseEl = document.createElement('div')
                         purchaseEl.className = "purchaseAmount"
                         purchaseEl.innerText = `+${purchaseAmount} ${sourceSymbol}`
-                        let totalAmount = orderData['sourceAmount']
+                        let totalAmount = Number(orderData['sourceAmount'])
                         let totalEl = document.createElement('div')
                         totalEl.className = "total"
                         totalEl.innerText = `TOTAL: ${totalAmount} ${sourceCurrency}`
@@ -162,8 +164,9 @@
                 let totalPurchaseEl = document.querySelector('.totalPurchased')
                 Object.entries(totalPurchaseAmount).map((item, i) => {
                     let currency = item[0]
-                    let amount = item[1]['amount']
+                    let amount = Number(item[1]['amount'])
                     let symbol = item[1]['symbol']
+                    console.log(amount)
                     if (amount > 0) {
                         let totalPurchaseCurrency = document.createElement('div')
                         totalPurchaseCurrency.className = "totalPurchasedItem"
