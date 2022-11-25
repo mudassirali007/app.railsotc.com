@@ -89,6 +89,7 @@ class WyreController extends Controller
     public function webhook(Request $request)
     {       
 
+        
       \Storage::append('webhook.txt', $request);
      
         if(isset($request['referenceId']) && isset($request['orderId'])){
