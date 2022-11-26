@@ -16,9 +16,15 @@
             setTimeout(async () => {
                 let spinnerContainer = document.querySelector('.spinnerContainer')
                 spinnerContainer.innerHTML = ""
-            }, 1900)
+            }, 19000)
         </script>
         </div>
         <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993" integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA==" data-cf-beacon='{"rayId":"76b59e902a1a0c38","version":"2022.11.0","r":1,"token":"6e276d29129a46e7baec146019c09ef9","si":100}' crossorigin="anonymous"></script>
     </body>
+    <style>
+        .spinner>div {
+            background-color: rgba(95,206,111,.2);
+            border: 1px solid #5fc36f;
+        }
+    </style>
 </html>
